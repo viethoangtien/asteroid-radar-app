@@ -42,6 +42,7 @@
             android:id="@+id/image_status"
             android:layout_width="@dimen/dp_32"
             android:layout_height="@dimen/dp_32"
+            android:contentDescription="@{item.potentiallyHazardous ? @string/potentially_hazardous_asteroid : @string/not_hazardous_asteroid}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"

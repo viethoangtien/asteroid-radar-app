@@ -15,6 +15,8 @@
     <string name="image_of_the_day">Image du jour</string>
     <string name="astronomical_unit_explanation">L\'unité astronomique (au) est une unité de longueur, correspondant à peu près à la distance entre la Terre et le Soleil et égale à environ 150 millions de kilomètres (93 millions de miles).</string>
     <string name="astronomical_unit_explanation_button">Définition de l\'unité astronomique</string>
+    <string name="potentially_hazardous_asteroid">Astéroïde potentiellement dangereux</string>
+    <string name="not_hazardous_asteroid">Astéroïde non dangereux</string>
     <string name="potentially_hazardous_asteroid_image">Image d\'un astéroïde potentiellement dangereux</string>
     <string name="not_hazardous_asteroid_image">Image d\'astéroïde non dangereuse</string>
     <string name="this_is_nasa_s_picture_of_day_showing_nothing_yet">C\'est la photo du jour de la NASA, qui ne montre encore rien.</string>
