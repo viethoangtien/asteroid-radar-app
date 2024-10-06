@@ -5,8 +5,9 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
-import com.udacity.asteroidradar.model.Asteroid
+import com.udacity.asteroidradar.Constants.SAVED_ASTEROID
 import com.udacity.asteroidradar.model.Picture
 import com.udacity.asteroidradar.repository.AsteroidRepository
 import com.udacity.asteroidradar.repository.AsteroidRepositoryImpl
@@ -18,6 +19,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application = a
 
     private val _pictureLiveData: MutableLiveData<Picture> = MutableLiveData()
     val pictureLiveData: LiveData<Picture> = _pictureLiveData
+
+    private val _filterAsteroidLiveData: MutableLiveData<Int> = MutableLiveData(SAVED_ASTEROID)
 
     init {
         getPictureOfTheDay()
@@ -41,7 +44,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application = a
         AsteroidRepositoryImpl(application)
     }
 
-    fun getLatestAsteroidList() = asteroidRepository.getLatestAsteroidList()
+    fun getLatestAsteroidList() = _filterAsteroidLiveData.switchMap { filterType ->
+        asteroidRepository.getLatestAsteroidList(filterType = filterType)
+    }
 
     fun fetchAllAsteroids() {
         viewModelScope.launch {
@@ -55,5 +60,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application = a
                 Log.d("MainViewModel", "Fetch All Asteroid Exception: $it")
             }
         }
+    }
+
+    fun filterAsteroid(filterType: Int) {
+        _filterAsteroidLiveData.value = filterType
     }
 }

@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
 import com.udacity.asteroidradar.BuildConfig
+import com.udacity.asteroidradar.Constants
 import com.udacity.asteroidradar.data.api.AsteroidApi
 import com.udacity.asteroidradar.data.api.AsteroidApiService
 import com.udacity.asteroidradar.data.api.parseAsteroidsJsonResult
@@ -35,10 +36,22 @@ class AsteroidRepositoryImpl(
         AsteroidApi.retrofitService
     }
 
-    override fun getLatestAsteroidList(): LiveData<List<Asteroid>> =
-        asteroidDatabase.asteroidDao.getAsteroids().map { asteroidEntities ->
+    override fun getLatestAsteroidList(filterType: Int): LiveData<List<Asteroid>> {
+        val asteroidDao = asteroidDatabase.asteroidDao
+        return when (filterType) {
+            Constants.SAVED_ASTEROID -> asteroidDao.getSavedAsteroids()
+            Constants.NEXT_WEEK_ASTEROID -> asteroidDao.getNextWeekAsteroids(
+                currentDate = CalendarUtils.getCurrentDate()
+            )
+
+            else -> asteroidDao.getTodayAsteroids(
+                currentDate = CalendarUtils.getCurrentDate()
+            )
+        }.map { asteroidEntities ->
             asteroidEntities.map { it.toAsteroid() }
         }
+    }
+
 
     override suspend fun deleteAndInsertAsteroids(asteroidList: List<Asteroid>) {
         asteroidDatabase.asteroidDao.deleteAllAsteroid()
@@ -51,8 +64,8 @@ class AsteroidRepositoryImpl(
         return suspendCoroutine { continuation ->
             var jsonResult: String?
             asteroidApiService.getAsteroids(
-                startDate = CalendarUtils.getCurrentDateTime(),
-                endDate = CalendarUtils.getNextSevenDaysFromCurrentDateTime(),
+                startDate = CalendarUtils.getCurrentDate(),
+                endDate = CalendarUtils.getNextSevenDaysFromCurrentDate(),
                 apiKey = BuildConfig.API_KEY
             ).enqueue(object : Callback<String> {
                 override fun onResponse(call: Call<String>, response: Response<String>) {

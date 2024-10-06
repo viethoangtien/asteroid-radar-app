@@ -6,13 +6,13 @@ import java.util.Calendar
 import java.util.Locale
 
 object CalendarUtils {
-    fun getCurrentDateTime(): String {
+    fun getCurrentDate(): String {
         val currentTime = Calendar.getInstance().time
         val dateFormat = SimpleDateFormat(Constants.API_QUERY_DATE_FORMAT, Locale.getDefault())
         return dateFormat.format(currentTime)
     }
 
-    fun getNextSevenDaysFromCurrentDateTime(): String {
+    fun getNextSevenDaysFromCurrentDate(): String {
         val currentTime = Calendar.getInstance().apply {
             add(Calendar.DAY_OF_YEAR, 7)
         }.time

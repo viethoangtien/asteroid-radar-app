@@ -6,4 +6,7 @@ object Constants {
     const val BASE_URL = "https://api.nasa.gov/"
     const val DATABASE_NAME = "asteroid"
     const val WORK_NAME = "CoroutineRefreshDataWorker"
+    const val SAVED_ASTEROID = 0
+    const val NEXT_WEEK_ASTEROID = 1
+    const val TODAY_ASTEROID = 2
 }
